@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lamda-login
+
+  Sample lamda login
+
+  '
+Globals:
+  Function:
+    MemorySize: 512
+    Timeout: 20
+Outputs:
+  LamdaLoginApi:
+    Description: API Gateway endpoint URL for Stage stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/user/login/
+  LamdaLoginFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - LamdaLoginFunction
+      - Arn
+  LamdaLoginFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - LamdaLoginFunction
+      - Arn
+Resources:
+  LamdaLoginFunction:
+    Properties:
+      CodeUri: s3://buckettoholdjars/2319757564f0a3317e1c3a7f125a6ac8
+      Events:
+        LamdaLogin:
+          Properties:
+            Method: post
+            Path: /login
+          Type: Api
+      Handler: com.example.lamda.login.LoginController::login
+      Runtime: java8
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31

@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'lamda-userDetails
+
+  Sample app to get user details
+
+  '
+Globals:
+  Function:
+    MemorySize: 512
+    Timeout: 20
+Outputs:
+  LamdaUserDetailsApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Stage/
+  LamdaUserDetailsFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - LamdaUserDetailsFunction
+      - Arn
+  LamdaUserDetailsIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - LamdaUserDetailsFunction
+      - Arn
+Resources:
+  LamdaUserDetailsFunction:
+    Properties:
+      CodeUri: s3://buckettoholdjars/6757f7857f0472b0af14c4414e7fcaa8
+      Events:
+        LamdaUserDetails:
+          Properties:
+            Method: post
+            Path: /user
+          Type: Api
+      Handler: com.example.lamda.user.UserController::getUserDetails
+      Runtime: java8
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
