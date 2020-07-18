@@ -1,0 +1,49 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+  "Transform" : [ "AWS::Serverless-2016-10-31" ],
+  "Description" : "sam-app\nSample SAM Template for sam-app\n",
+  "Resources" : {
+    "LoginFoodFunction" : {
+      "Type" : "AWS::Serverless::Function",
+      "Properties" : {
+        "Role" : null,
+        "MemorySize" : 512,
+        "Runtime" : "java8",
+        "Description" : null,
+        "Policies" : [ ],
+        "CodeUri" : "./target/food-login-0.0.1-SNAPSHOT.jar",
+        "Events" : {
+          "HelloWorld" : {
+            "Type" : "Api",
+            "Properties" : {
+              "Path" : "/login",
+              "Method" : "post"
+            }
+          }
+        },
+        "Timeout" : 300,
+        "Handler" : "org.systa.food.login.LoginController::getUsersByMobileNumber"
+      }
+    }
+  },
+  "Globals" : {
+    "Function" : {
+      "Timeout" : 20,
+      "MemorySize" : 512
+    }
+  },
+  "Outputs" : {
+    "LoginFoodApi" : {
+      "Description" : "API Gateway endpoint URL for Prod stage for Hello World function",
+      "Value" : "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    },
+    "LoginFoodFunction" : {
+      "Description" : "Hello World Lambda Function ARN",
+      "Value" : "LoginFoodFunction.Arn"
+    },
+    "LoginFoodFunctionIamRole" : {
+      "Description" : "Implicit IAM Role created for Hello World function",
+      "Value" : "LoginFoodFunction.Arn"
+    }
+  }
+}
